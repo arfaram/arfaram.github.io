@@ -1,0 +1,27 @@
+/*bacground-image: https://github.com/ezsystems/slides/blob/gh-pages/slides/ezplatform-using-solr-and-php7/imgs/eZ-Logo.svg*/
+.reveal .slides::after {
+    content: "";
+    background-image: url("../img/eZ-Logo.svg");
+    background-size: 20%;
+    background-position: 100% 100%;
+    background-repeat: no-repeat;
+    opacity: 0.2;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    z-index: -1;
+}
+.reveal .slides:hover::after {
+    opacity: 0.8;
+}
+.reveal section img {
+    background: transparent;
+    border: 0;
+}
+.reveal table td {
+    border-bottom: 0 none;
+}
+
+.reveal ul ul li {font-size: 85%; }
