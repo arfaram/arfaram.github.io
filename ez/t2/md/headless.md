@@ -24,12 +24,10 @@
 ---
 
 ```
-{% block body %}
-    <div
-        id="todolist"
-        data-items="{{ items|json_encode }}"
-    ></div>
-{% endblock %}
+<div
+    id="todolist"
+    data-items="{{ items|json_encode }}"
+></div>
 
 ```
 
