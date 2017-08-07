@@ -4,27 +4,26 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>Going Headless with eZ Platform</title>
+		<title>Ramzi Arfaoui Slides</title>
 
 		<link rel="stylesheet" href="../reveal.js/css/reveal.css">
 		<link rel="stylesheet" href="../reveal.js/css/theme/white.css" id="theme">
 		<!-- Theme used for syntax highlighting of code -->
 		<link rel="stylesheet" href="../reveal.js/lib/css/zenburn.css">
     <!-- Add some transparent background to slide to make it more readable despite bg image -->
-    <link rel="stylesheet" href="css/style_headless1.css">
+    <link rel="stylesheet" href="css/style.css">
 	</head>
 	<body>
-
-		<img class="ez_logo" src="img/eZ-Logo.svg" />
 		<div class="reveal">
 			<div class="slides">
 
-        <section data-markdown="md/headless.md"
+        <section data-markdown="md/index.md"
                           data-separator="^\n---\n$"
                           data-separator-vertical="^\n--\n$"
                           data-notes="^Note:"
                           data-charset="utf-8">
         </section>
+
 			</div>
 		</div>
 
@@ -34,10 +33,9 @@
 		<script>
 			// More info https://github.com/hakimel/reveal.js#configuration
 			Reveal.initialize({
-          controls: true,
-  				center: true,
+          controls: false,
+  				center: false,
           history: true,
-					progress: false,
           dependencies: [
   					{ src: '../reveal.js/plugin/markdown/marked.js' },
   					{ src: '../reveal.js/plugin/markdown/markdown.js' },
