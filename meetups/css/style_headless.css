@@ -1,26 +1,23 @@
 /*bacground-image: https://github.com/ezsystems/slides/blob/gh-pages/slides/ezplatform-using-solr-and-php7/imgs/eZ-Logo.svg*/
-.reveal .slides::after {
+body::before {
+    background-image: linear-gradient(to right, #f7b31d, #f5971f, #f58442, #f05a22);
     content: "";
-    background-image: url("../img/eZ-Logo.svg");
-    background-size: 20%;
-    background-position: 100% 100%;
-    background-repeat: no-repeat;
-    /*opacity: 0.2;*/
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
+    display: block;
+    height: 5px;
     position: absolute;
-    z-index: -1;
+    bottom:0px;
+    width: 100%;
 }
-/*
-.reveal .slides:hover::after {
-    opacity: 0.8;
+body {
+    background: rgba(0, 0, 0, 0) radial-gradient(rgb(240, 240, 240), rgb(190, 190, 190)) repeat scroll 0 0;
+
 }
-*/
-.reveal section img {
-    background: transparent;
-    border: 0;
+
+.ez_logo {
+    left: 3%;
+    position: absolute;
+    top: 2%;
+    width: 100px;
 }
 .reveal table td {
     border-bottom: 0 none;
@@ -37,3 +34,7 @@
 .reveal .controls .navigate-right.enabled:hover{border-left-color: #1f1f1f;}
 .reveal .controls .navigate-up.enabled:hover{border-bottom-color: #1f1f1f;}
 .reveal .controls .navigate-down.enabled:hover{border-top-color: #1f1f1f;}
+
+.reveal .slides p{  text-align: left !important;}
+
+.reveal h2 {text-transform: none; border-bottom: 1px solid #ccc;}
