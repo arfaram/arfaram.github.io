@@ -152,14 +152,18 @@ ez_rest_get:
 
 ## Request Example
 
-`/api/ezp/v2/ez_rest/contentTypeContent/48?&limit=1&subtree=99&fields=title,summary,description,main_image&sort=DESC
-`
+```
+/api/ezp/v2/ez_rest/contentTypeContent/48?&limit=1&subtree=99&fields=title,summary,description,main_image&sort=DESC&lang=ger-DE&image_variation=small&hidden=true
+```
 - Request Parameters
   - contentTypeID
   - limit
   - subtree
   - fields
   - sort
+  - lang
+  - image_variation
+  - hidden
 
 --
 
@@ -374,6 +378,9 @@ class ContentData extends ValueObjectVisitor
     <limit>2</limit>
     <subtree>109</subtree>
     <sort>DESC</sort>
+    <hidden>false</hidden>
+    <lang>ger-DE</lang>
+    <image_variation>small</image_variation>
     <fields>
     	<field>
     		<fieldDefinitionIdentifier>title</fieldDefinitionIdentifier>
