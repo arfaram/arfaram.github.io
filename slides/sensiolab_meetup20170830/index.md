@@ -10,9 +10,9 @@
 
 - Professional Services @ ez Systems
 - ramzi.arfaoui@ez.no
-- Twitter <a target="_blank" href="https://twitter.com/ramzi_ar" >@ramzi_ar</a>
-- GitHub <a target="_blank" href="https://github.com/ramzi-arfaoui/" >ramzi-arfaoui</a>
-- Gist <a target="_blank" href="https://gist.github.com/ramzi-arfaoui/" >ramzi-arfaoui</a>
+- Twitter <a target="blank" href="https://twitter.com/ramzi_ar" >@ramzi_ar</a>
+- GitHub <a target=" blank" href="https://github.com/arfaram" >arfaram</a>
+- Gist <a target="blank" href="https://gist.github.com/arfaram" >arfaram</a>
 
 ---
 
@@ -250,7 +250,7 @@ Check eZ Launchpad https://ezsystems.github.io/launchpad/
 ## GET: Location, Content, ObjectStates
 
 - Load Location children
-	- /api/ezp/v2/content/locations/< PATH|PARENT-LOCATION-ID >/children 
+	- /api/ezp/v2/content/locations/< PATH|PARENT-LOCATION-ID >/children
 - Load Location Information
 	- /ezp/v2/content/locations/< PATH >
 - Load Content Information
@@ -326,7 +326,7 @@ What we need:
 
 
 
-Example: Image Base64 using openssl encrypt tools: 
+Example: Image Base64 using openssl encrypt tools:
 
 ```
 openssl enc -base64 -in black_story.jpeg > black_story.b64
@@ -750,8 +750,8 @@ djA7WuHKtjsRnkV24AAAAwB0pN3BKwtFFFIo/9k=]]></value>
 
 ## Using Curl, httpie
 
-- https://gist.github.com/ramzi-arfaoui/bdc5d9c4aa73e625cc440d1a776c020c
-- https://gist.github.com/ramzi-arfaoui/d2914bf089f6fa4db1eb23cf23fe1844
+- https://gist.github.com/arfaram/bdc5d9c4aa73e625cc440d1a776c020c
+- https://gist.github.com/arfaram/d2914bf089f6fa4db1eb23cf23fe1844
 
 --
 
@@ -778,7 +778,7 @@ RESPONSE:
 - custom
 - forward
 
-<small>More Public-API example: https://gist.github.com/ramzi-arfaoui/98d01be9e5f6b144074dae0915919a0d</small>
+<small>More Public-API example: https://gist.github.com/arfaram/98d01be9e5f6b144074dae0915919a0d</small>
 
 --
 
@@ -812,7 +812,7 @@ RESPONSE:
 
 ## GraphQL
 
-- Location URL Alias 
+- Location URL Alias
 
 ```
 {location(id:139) {
@@ -867,7 +867,7 @@ mutation {
 
 ## Pugpig  
 
-## HTML Mobile Publishing 
+## HTML Mobile Publishing
 
 - Newspaper
 - Magasins
@@ -893,4 +893,3 @@ mutation {
 
 - https://github.com/ezsystems
 - https://ezcommunity.slack.com/
-
