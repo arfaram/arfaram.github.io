@@ -12,8 +12,8 @@
 - Professional Services @ ez Systems
 - ramzi.arfaoui@ez.no
 - Twitter <a target="blank" href="https://twitter.com/ramzi_ar">@ramzi_ar</a>
-- GitHub <a target="blank" href="https://github.com/ramzi-arfaoui/">ramzi-arfaoui</a>
-- Gist <a target="blank" href="https://gist.github.com/ramzi-arfaoui/">ramzi-arfaoui</a>
+- GitHub <a target="blank" href="https://github.com/arfaram">arfaram</a>
+- Gist <a target="blank" href="https://gist.github.com/arfaram">arfaram</a>
 
 ---
 
@@ -27,7 +27,7 @@
 
 ## Recap (Teil 1)
 
-- [Going Headless with eZ Platform](https://ramzi-arfaoui.github.io/slides/sensiolab_meetup20170830/)
+- [Going Headless with eZ Platform](https://arfaram.github.io/slides/sensiolab_meetup20170830/)
   - Rest API to interact with the repository (Level 3: I URI , II HTTP verbs, III HATEOAS)
   - Request/Response Formats: XML and JSON
 ```
@@ -510,6 +510,12 @@ Using Varnish
 
 ---
 
+## Demo
+
+https://github.com/arfaram/ezrestdemobundle
+
+---
+
 ### Thank you :-)
 
 |                   |                                                                             |
@@ -517,31 +523,4 @@ Using Varnish
 | We                |**http://ez.no**                                                             |
 | Installation      |**https://ezplatform.com<br> https://github.com/ezsystems**                  |
 | Documentation     |**http://doc.ezplatform.com (NEW)<br> https://doc.ez.no**                    |
-| Contact us        |**https://ezcommunity.slack.com<br> https://discuss.ezplatform.com (NEW)**    |
-
-
----
-
-without cache
-  Cache-Control →private
-  Content-Type →application/vnd.ez.api.ContentList+xml
-
-
-http cache filesystem
-  Age →3
-  Cache-Control →public, s-maxage=60
-  x-content-digest →ezlocation/99/ene7eba198a7365c6c16a87e18d824e58b4d237b088267d7061eda049920382a96
-  x-location-id →99
-
-
-Varnish
-  Age →2
-  Cache-Control →public, s-maxage=60
-  Via →1.1 varnish-v4
-  X-Cache →HIT
-  X-Cache-Hits →1
-  X-Location-Id →99
-  X-Varnish →32811 32810
-
-  -   ReqMethod      BAN
-  -   ReqHeader      X-Debug: Ban done for content connected to LocationId ^(100|99)$
+| Contact us        |**https://ezcommunity.slack.com<br> https://discuss.ezplatform.com (NEW)**   |
