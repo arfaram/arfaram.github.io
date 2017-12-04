@@ -1,5 +1,5 @@
 <div style="text-align: left;">
-
+ 
   <h3>Slides</h3>
 
   <a target="_blank" href="https://arfaram.github.io/slides/sensiolab_meetup20170830"><small>- Going Headless with eZ Platform - SensioLabs Cologne 2017/08/30</small></a>
