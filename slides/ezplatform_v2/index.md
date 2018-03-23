@@ -1,4 +1,6 @@
-# What's New in eZ Platform v2
+## &nbsp;
+
+<center><img class="scale70" title="ezsystems" src="img/whats_new_in_ezplatformv2.png"/></center>
 
 ---
 
