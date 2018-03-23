@@ -418,11 +418,9 @@ Others:
 
 ### Thank you
 
-- https://ezplatform.com/
-- http://ez.no
-
-- http://doc.ezplatform.com
-- https://doc.ez.no
-
-- https://github.com/ezsystems
-- https://ezcommunity.slack.com/
+|                   |                                                                             |
+|-------------------|:----------------------------------------------------------------------------|
+| We                |**http://ez.no**                                                             |
+| Installation      |**https://ezplatform.com<br> https://github.com/ezsystems**                  |
+| Documentation     |**http://doc.ezplatform.com (NEW)<br> https://doc.ez.no**                    |
+| Contact us        |**https://ezcommunity.slack.com<br> https://discuss.ezplatform.com (NEW)**   |
