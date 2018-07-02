@@ -40,3 +40,7 @@ body {
 .reveal h2 {text-transform: none; border-bottom: 1px solid #ccc;}
 
 .reveal section img{ box-shadow: none; border:0 none }
+
+.reveal code {
+    background: #eee;
+}
