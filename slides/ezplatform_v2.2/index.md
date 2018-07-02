@@ -339,6 +339,103 @@ Add the Renderer service definition to the service container
 
 --
 
+## Add Renderer class
+
+```
+Core
+└── Notification
+    └── Renderer.php
+
+```
+
+```
+<?php
+
+namespace EzSystems\CustomizeAdminUIBundle\Core\Notification;
+
+use EzSystems\Notification\SPI\Renderer\NotificationRenderer;
+use EzSystems\Notification\SPI\Persistence\ValueObject\Notification;
+use Symfony\Component\Routing\RouterInterface;
+use Twig\Environment;
+
+/**
+ * Class Renderer
+ *
+ * @package EzSystems\CustomizeAdminUIBundle\Core\Notification
+ */
+class Renderer implements NotificationRenderer
+{
+    /** @var \Twig\Environment  */
+    protected $twig;
+
+    /** @var \Symfony\Component\Routing\RouterInterface  */
+    protected $router;
+
+    /**
+     * Renderer constructor.
+     *
+     * @param \Twig\Environment $twig
+     * @param \Symfony\Component\Routing\RouterInterface $router
+     */
+    public function __construct(Environment $twig, RouterInterface $router)
+    {
+        $this->twig = $twig;
+        $this->router = $router;
+    }
+
+    /**
+     * @param \EzSystems\Notification\SPI\Persistence\ValueObject\Notification $notification
+     * @return string
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
+     */
+    public function render(Notification $notification): string
+    {
+        return $this->twig->render('EzSystemsCustomizeAdminUIBundle:notification:notification.html.twig', ['notification' => $notification]);
+    }
+
+    public function generateUrl(Notification $notification): ?string
+    {
+        if (property_exists($notification->data, 'custom_notification'))
+        {
+            return $notification->data->link;
+        }
+
+        return null;
+    }
+}
+```
+
+--
+
+- You can use also the `RouterInterface` to generate a content view URL.
+```
+use Symfony\Component\Routing\RouterInterface;
+//...
+$this->router->generate('_ez_content_view', ['contentId' => $contentInfo->id,]);
+```
+
+Some Route Examples: `ezplatform-admin-ui/src/bundle/Resources/config/routing.yml`
+
+--
+
+notification.yml
+
+```
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: false
+        public: false
+
+    EzSystems\CustomizeAdminUIBundle\Core\Notification\Renderer:
+        tags:
+            - { name: ezstudio.notification.renderer, alias: 'FlexWorkflow:CustomContentReview' }
+```
+
+--
+
 <img src="img/workflow_notification.png" >
 
 - More information in `eznotification` database table
@@ -365,6 +462,8 @@ Add the Renderer service definition to the service container
 
 <img class="scale70" src="img/features2.2/bookmarks.png" >
 
+- REST API (List, Create, Check location is bookmarked, delete)
+	- https://github.com/ezsystems/ezpublish-kernel/blob/master/doc/specifications/rest/REST-API-V2.rst#bookmark
 
 --
 
@@ -401,7 +500,9 @@ Add the Renderer service definition to the service container
 
 - Previewing user and user group permissions (new Tab)
 
-<center><img class="scale70" src="img/features2.2/user_policies.png" ></center>
+<center><img class="scale60" src="img/features2.2/user_policies.png" ></center>
+
+- Some buttons in the UI(create, edit, delete ...) will be disabled if users don’t have the right permission
 
 --
 
@@ -469,6 +570,87 @@ In order to support 4-byte characters <img src="img/features2.2/emoji.png" >
 
 --
 
+- Notification Bundle
+
+Notification Bundle is now moved into CoreBundle of EzPublishKernel. This allows whole community to get access to eZ notification system.
+
+--
+
+- Choosing installation types
+
+Installation types used with the `ezplatform:install` command are now more consistent:
+
+```
+
+    ezplatform-clean
+    ezplatform-demo
+    ezplatform-ee-clean
+    ezplatform-ee-demo
+
+```
+You can also use the new `composer ezplatform-install` command which automatically chooses a correct installation type for the given meta-repository.
+
+--
+
+- Creator Search Filter using autocomplete
+
+<center><img class="scale50" src="img/features2.2/creator_filter_autocomplete.png" ></center>
+
+--
+
+- Standard design
+
+eZ Platform now comes with two designs using the design engine: `standard` for content view and `admin` for the Back Office.
+
+```
+ezdesign:
+    design_list:
+        admin: [admin, standard]
+
+ezpublish:
+    system:
+        admin_group:
+            design: admin
+```
+
+--
+
+When the `ez_platform_standard_design.override_kernel_templates` setting is `true`, the standard theme is automatically mapped to the directory in kernel containing the templates.
+```
+ez_platform_standard_design:
+    # makes Kernel default templates (in EzPublishCoreBundle/Resources/views) part of standard Design
+		override_kernel_templates: true
+```
+
+https://doc.ezplatform.com/en/2.2/guide/design_engine/#default-designs
+
+--
+
+- Pagination limits
+
+```
+parameters:
+		ezsettings.default.subitems_module.limit: 10
+		ezsettings.default.pagination.search_limit: 10
+		ezsettings.default.pagination.trash_limit: 10
+		ezsettings.default.pagination.section_limit: 10
+		ezsettings.default.pagination.language_limit: 10
+		ezsettings.default.pagination.role_limit: 10
+		ezsettings.default.pagination.content_type_group_limit: 10
+		ezsettings.default.pagination.content_type_limit: 10
+		ezsettings.default.pagination.role_assignment_limit: 10
+		ezsettings.default.pagination.policy_limit: 10
+		ezsettings.default.pagination.version_draft_limit: 5
+		ezsettings.default.pagination.content_system_url_limit: 5
+		ezsettings.default.pagination.content_custom_url_limit: 5
+		ezsettings.default.pagination.content_role_limit: 5
+		ezsettings.default.pagination.content_policy_limit: 5
+		ezsettings.default.pagination.bookmark_limit: 10
+```
+`ezplatform-admin-ui/src/bundle/Resources/config/ezplatform_default_settings.yml`
+
+--
+
 ## Page Builder
 
 - A new name for a major upgrade (RIP LandingPage Manager)
@@ -476,6 +658,8 @@ In order to support 4-byte characters <img src="img/features2.2/emoji.png" >
 - Better usability and comfort for editors
 - Create content “on the fly” when adding a block to a page
 - Better managing versions, translations and draft conflicts
+- Floating toolbar of the Blocks
+- Publish later & Send for Review like any content
 - Use the `Page` FieldType with any other ContentType
 	- Allow different field definitions for pages on different sites
 - Extending using the power and simplicity of Symfony Forms and TWIG template.
@@ -492,12 +676,21 @@ In order to support 4-byte characters <img src="img/features2.2/emoji.png" >
 
 --
 
+- Disable `Class & Style` fields with
 
-- Full list of new features
+```
+ezsettings.default.page_builder.block_styling_enabled: false
+```
+
+
+--
+
+
+- Read about the features
 
 https://ez.no/Blog/A-Quick-Look-Into-the-New-Page-Builder-of-eZ-Platform
 
-https://github.com/ezsystems/developer-documentation/pull/303
+https://doc.ezplatform.com/en/2.2/releases/ez_platform_v2.2.0/
 
 ---
 
