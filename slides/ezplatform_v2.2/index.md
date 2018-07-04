@@ -557,6 +557,37 @@ bin/console ezplatform:images:resize-original photo image -f small_image
 
 --
 
+- language parameters injection layer
+
+Before
+```
+$content = $this->contentService->loadContent(
+    42,
+    $this->configResolver->getParameter('languages')
+);
+
+$name = $content->getVersionInfo()->getName();
+$value = $content->getFieldValue('body')
+```
+After
+```
+$content = $this->contentService->loadContent(42);
+$name = $content->getVersionInfo()->getName();
+$value = $content->getFieldValue('body')
+```
+
+--
+
+- UI Translation
+
+```
+composer require ezplatform-i18n/ezplatform-i18n-de_de
+```
+
+<center><img class="scale50" src="img/features2.2/ui_translation.png" ></center>
+
+--
+
 - URL Generation Pattern
 
 You can now select the pattern that will be used to generate URL patterns.
