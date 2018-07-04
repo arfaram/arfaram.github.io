@@ -541,6 +541,22 @@ image_placeholder:
 
 --
 
+- Resizing images
+
+You can resize all original images of a chosen Content Type using the `ezplatform:images:resize-original` command. You need to provide the command with:
+
+```
+- identifier of the image Content Type
+- identifier of the Field you want to affect
+- name of the image variation to apply to the images
+```
+
+```
+bin/console ezplatform:images:resize-original photo image -f small_image
+```
+
+--
+
 - URL Generation Pattern
 
 You can now select the pattern that will be used to generate URL patterns.
