@@ -471,6 +471,15 @@ services:
 
 <center><img class="width:20px;" src="img/features2.2/copy_subtree.png" ></center>
 
+```
+./bin/console ezplatform:content:copy_subtree \
+	--source_location=42 \
+	--destination_location=1337 \
+	--siteaccess=foobar_admin \
+	--user=elite
+```
+Would copy location 42 and all it's childrent to location 1337 using the siteaccess foobar_admin with the user whose login is "elite".
+
 --
 
 - ContentType view new design and edit button is now added
