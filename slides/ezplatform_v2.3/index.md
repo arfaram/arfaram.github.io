@@ -2,6 +2,12 @@
 
 <center><small>Meetup at <a href="http://ez.no">eZ Systems</a> Cologne 2018/09/25</small></center>
 
+--
+
+## Say hello to the new **PageBuilder** 
+
+<img class="scale70" src="img/features2.3/page_builder_scheduler_feature.png" >
+
 ---
 
 # eZ Platform v2.3 Features
@@ -237,8 +243,9 @@ services:
 
 --
 
-# Demo
+## Demo
 
+<img class="scale70" src="img/features2.3/page_builder_scheduler_feature.png" >
 
 --
 
