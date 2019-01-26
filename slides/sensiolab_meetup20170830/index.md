@@ -881,15 +881,12 @@ mutation {
 
 ---
 
-## The end
+### Thank you
 
-### Thank you :-)
-
-- https://ezplatform.com/
-- http://ez.no
-
-- http://doc.ezplatform.com (NEW)
-- https://doc.ez.no
-
-- https://github.com/ezsystems
-- https://ezcommunity.slack.com/
+|                   |                                                                             |
+|-------------------|:----------------------------------------------------------------------------|
+| We                |**http://ez.no**                                                             |
+| Installation      |**https://ezplatform.com<br> https://github.com/ezsystems**                  |
+| Documentation     |**http://doc.ezplatform.com**                   |
+| Product Roadmap   |**[Product Roadmap](https://portal.productboard.com/vsjzmdg4emeihrpkxcfz6nrz)**                   |
+| Tech. Contact     |**[Slack](https://ez-community-on-slack.herokuapp.com/)<br> https://discuss.ezplatform.com**   |

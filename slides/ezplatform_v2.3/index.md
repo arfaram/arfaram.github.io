@@ -4,7 +4,7 @@
 
 --
 
-## Say hello to the new **PageBuilder** 
+## Say hello to the new **PageBuilder**
 
 <img class="scale70" src="img/features2.3/page_builder_scheduler_feature.png" >
 
@@ -333,4 +333,5 @@ https://ez.no/Blog
 | We                |**http://ez.no**                                                             |
 | Installation      |**https://ezplatform.com<br> https://github.com/ezsystems**                  |
 | Documentation     |**http://doc.ezplatform.com**                   |
-| Contact us        |**https://ezcommunity.slack.com<br> https://discuss.ezplatform.com**   |
+| Product Roadmap   |**[Product Roadmap](https://portal.productboard.com/vsjzmdg4emeihrpkxcfz6nrz)**                   |
+| Tech. Contact     |**[Slack](https://ez-community-on-slack.herokuapp.com/)<br> https://discuss.ezplatform.com**   |

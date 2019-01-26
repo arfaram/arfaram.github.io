@@ -422,5 +422,6 @@ Others:
 |-------------------|:----------------------------------------------------------------------------|
 | We                |**http://ez.no**                                                             |
 | Installation      |**https://ezplatform.com<br> https://github.com/ezsystems**                  |
-| Documentation     |**http://doc.ezplatform.com (NEW)<br> https://doc.ez.no**                    |
-| Contact us        |**https://ezcommunity.slack.com<br> https://discuss.ezplatform.com (NEW)**   |
+| Documentation     |**http://doc.ezplatform.com**                   |
+| Product Roadmap   |**[Product Roadmap](https://portal.productboard.com/vsjzmdg4emeihrpkxcfz6nrz)**                   |
+| Tech. Contact     |**[Slack](https://ez-community-on-slack.herokuapp.com/)<br> https://discuss.ezplatform.com**   |

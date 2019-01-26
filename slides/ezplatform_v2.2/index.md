@@ -757,4 +757,5 @@ https://doc.ezplatform.com/en/2.2/releases/ez_platform_v2.2.0/
 | We                |**http://ez.no**                                                             |
 | Installation      |**https://ezplatform.com<br> https://github.com/ezsystems**                  |
 | Documentation     |**http://doc.ezplatform.com**                   |
-| Contact us        |**https://ezcommunity.slack.com<br> https://discuss.ezplatform.com**   |
+| Product Roadmap   |**[Product Roadmap](https://portal.productboard.com/vsjzmdg4emeihrpkxcfz6nrz)**                   |
+| Tech. Contact     |**[Slack](https://ez-community-on-slack.herokuapp.com/)<br> https://discuss.ezplatform.com**   |
