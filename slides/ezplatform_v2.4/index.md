@@ -7,7 +7,7 @@
 
 # eZ Platform v2.4 Features
 
-**Release date**: Dec 21, 2019
+**Release date**: Dec 21, 2018
 
 **Release type**: Fast Track
 
