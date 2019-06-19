@@ -1426,8 +1426,12 @@ $registryDefinition->addMethodCall(
 
 ```
 if ($form->isSubmitted()) {
+	//...
 	$result = $this->submitHandler->handle($form, function (UserSettingUpdateData $data) {
-	$this->userSettingService->setUserSetting($data->getIdentifier(), $data->getValue());
+		$this->userSettingService->setUserSetting($data->getIdentifier(), $data->getValue());
+		//...
+	}
+}
 ```
 
 - The `UserSettingUpdateType` build the edit form using both registry classes
@@ -1441,6 +1445,8 @@ public function buildForm(FormBuilderInterface $builder, array $options)
 			->add('identifier', HiddenType::class, [])
 			->add($formMapper->mapFieldForm($builder, $valueDefinition))
 			->add('update', SubmitType::class, []);
+
+}
 ```
 
 --
