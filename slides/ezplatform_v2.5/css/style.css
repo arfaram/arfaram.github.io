@@ -1,0 +1,90 @@
+/** Add eZ color on bottom */
+body::before {
+    background-image: linear-gradient(to right, #f7b31d, #f5971f, #f58442, #f05a22);
+    content: "";
+    display: block;
+    height: 5px;
+    position: absolute;
+    bottom:0;
+    width: 100%;
+}
+
+
+.reveal .slides > section > section.present {
+    width: 96%;
+}
+
+
+.ez_logo {
+    right: 3%;
+    position: absolute;
+    top: 3%;
+    width: 100px;
+}
+.reveal table td {
+    border-bottom: 0 none;
+}
+
+.reveal ul ul li {font-size: 85%; }
+
+.reveal .controls .navigate-left, .reveal .controls .navigate-left.enabled{border-right-color: #000000;}
+.reveal .controls .navigate-right, .reveal .controls .navigate-right.enabled{border-left-color: #000000;}
+.reveal .controls .navigate-up, .reveal .controls .navigate-up.enabled {border-bottom-color: #000000;}
+.reveal .controls .navigate-down, .reveal .controls .navigate-down.enabled {border-top-color: #000000;}
+
+.reveal .controls .navigate-left.enabled:hover{border-right-color: #1f1f1f;}
+.reveal .controls .navigate-right.enabled:hover{border-left-color: #1f1f1f;}
+.reveal .controls .navigate-up.enabled:hover{border-bottom-color: #1f1f1f;}
+.reveal .controls .navigate-down.enabled:hover{border-top-color: #1f1f1f;}
+
+.reveal .slides p{  text-align: left !important;}
+
+.reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 {
+    text-transform: none;
+}
+
+.reveal h2 {text-transform: none; border-bottom: 1px solid #ccc;}
+
+.reveal section img{ box-shadow: none; border:0 none }
+
+.ez .scale90 {
+    width:90%;
+}
+
+.ez .scale80 {
+    width:80%;
+}
+
+.ez .scale70 {
+    width:70%;
+}
+.ez .scale60 {
+    width:60%;
+}
+.ez .scale50 {
+    width:50%;
+}
+
+.ez .center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/** yaml code **/
+.reveal code.yaml{
+  background: #ffffff
+}
+
+.reveal code.yaml .hljs-attr{
+  color: #020d7f;
+  font-weight: bold;
+}
+
+.reveal code.yaml .hljs-string,
+.reveal code.yaml .hljs-literal,
+.reveal code.yaml .hljs-number{
+  color: #000000;
+}
+
+.orange_text {color: #ee5b2f}
