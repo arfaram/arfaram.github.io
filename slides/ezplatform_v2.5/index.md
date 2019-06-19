@@ -153,7 +153,7 @@ public static function getSubscribedEvents()
 public function guardReview(GuardEvent $event)
 {
         $subject = $event->getSubject();
-        if ( $subject instanceof Content && count($subject->getFieldValue('relations')->destinationContentIds) < 2 ) {
+        if( $subject instanceof Content && count($subject->getFieldValue('relations')->destinationContentIds) < 2 ) {
                 $event->setBlocked('true');
                 $this->notificationHandler->error(
                         'You should add at least two relations to this content'
@@ -1295,7 +1295,7 @@ const charactersWrapper = counterWrapper.querySelector('.ez-character-counter__c
 //... base-rich-text.js
 ```
 
-<img src="img/features2.5/richttext_words_characters_counter" title"" />
+<img src="img/features2.5/richttext_words_characters_counter.png" title="RichText character counter" />
 
 --
 
@@ -1326,9 +1326,11 @@ $availableTranslation: All installed ezplatform translation files in ezsystems/e
 Return a list of user's browser preferred locales directly from Accept-Language header.
 $preferableLocales = $this->requestStack->getCurrentRequest()->getLanguages(); //UserLanguagePreferenceProvider.php
 ```
+
 ```
-if (\in_array($preferableLocale, $this->availableTranslations, true) //RequestLocaleListener.php
+if(\in_array($preferableLocale, $this->availableTranslations, true) //RequestLocaleListener.php
 ```
+
 3. `parameters.locale_fallback` in `default_parameters.yml`
 
 --
@@ -1468,3 +1470,15 @@ public function buildForm(FormBuilderInterface $builder, array $options)
 - [Webinar youtube] [Discover eZ Platform v2.5](https://www.youtube.com/watch?v=3u_lFRGwWpA&feature=youtu.be&utm_campaign=%5BWebinar+Recording%5D+-++Discover+eZ+Platform+v2.5&utm_medium=email&utm_source=%5BWebinar+Recording%5D+-++Discover+eZ+Platform+v2.5&utm_content=Webinar+Recording%3A+Discover+eZ+Platform+v2.5)
 
 - [Webinar slideshare] [Discover eZ Platform v2.5](https://www.slideshare.net/eZ_Enterprise/webinar-discover-ez-platform-v25?utm_campaign=%5BWebinar%20Recording%5D%20-%20%20Discover%20eZ%20Platform%20v2.5&utm_medium=email&utm_source=%5BWebinar%20Recording%5D%20-%20%20Discover%20eZ%20Platform%20v2.5&utm_content=Webinar%20Recording%3A%20Discover%20eZ%20Platform%20v2.5)
+
+---
+
+### Thank you
+
+|                   |                                                                             |
+|-------------------|:----------------------------------------------------------------------------|
+| We                |**http://ez.no**                                                             |
+| Installation      |**https://ezplatform.com<br> https://github.com/ezsystems**                  |
+| Documentation     |**http://doc.ezplatform.com**                   |
+| Product Roadmap   |**[Product Roadmap](https://portal.productboard.com/vsjzmdg4emeihrpkxcfz6nrz)**                   |
+| Tech. Contact     |**[Slack](https://ez-community-on-slack.herokuapp.com/)<br> https://discuss.ezplatform.com**   |
