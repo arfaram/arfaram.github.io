@@ -1285,9 +1285,10 @@ ezsettings.default.user_preferences.allowed_full_date_formats:
 
 ```
 {% if ez_user_settings['character_counter'] == 'enabled' %}
-<span class="ez-character-counter__word-count" ...
-<span class="ez-character-counter__character-count" ...
-// ... ezrichtext.html.twig
+	<span class="ez-character-counter__word-count" ... >
+	<span class="ez-character-counter__character-count" ... >
+	// ...
+}//ezrichtext.html.twig
 ```
 ```
 const wordWrapper = counterWrapper.querySelector('.ez-character-counter__word-count');
