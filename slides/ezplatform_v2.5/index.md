@@ -1223,3 +1223,263 @@ array:2 [▼
 ```
 
 ---
+
+# User Preferences
+
+--
+
+<img class="center scale50" src="img/features2.5/user_preferences.png" title="eZ Platform user Preferences" />
+
+
+--
+
+```
+mysql> select * from ezpreferences;
++----+-----------------------+---------+------------------------------------------------------+
+| id | name                  | user_id | value (longtext!)                                    |
++----+-----------------------+---------+------------------------------------------------------+
+|  1 | subitems_limit        |      14 | 989                                                  |
+|  2 | character_counter     |      14 | disabled                                             |
+|  3 | language              |      14 | fr                                                   |
+|  4 | timezone              |      14 | Europe/Bratislava                                    |
+|  5 | short_datetime_format |      14 | {"date_format":"dd\/MM\/yyyy","time_format":"HH:mm"} |
+|  6 | full_datetime_format  |      14 | {"date_format":"dd LLLL yyyy","time_format":"HH:mm"} |
++----+-----------------------+---------+------------------------------------------------------+
+```
+
+- Value storage as string, XML or JSON depends on your needs
+
+--
+
+## Default settings
+
+- Some default values are stored in `ezplatform-user` or `ezplatform-admin-ui` bundles
+  - Sub-items
+```
+ezsettings.default.subitems_module.limit: 10
+```
+  - Long/ Short Date & Time format (defaults)
+```
+ezsettings.default.user_preferences.short_datetime_format:
+		date_format: 'dd/MM/yyyy'
+		time_format: 'HH:mm'
+ezsettings.default.user_preferences.full_datetime_format:
+		date_format: 'LLLL dd, yyyy'
+		time_format: 'HH:mm'
+```
+    - Whereas the latter can be extended using
+```
+ezsettings.default.user_preferences.allowed_short_date_formats:
+ezsettings.default.user_preferences.allowed_short_time_formats:
+ezsettings.default.user_preferences.allowed_full_time_formats:
+ezsettings.default.user_preferences.allowed_full_date_formats:
+		'German short format': 'dd.MM.yyyy'
+		'German long format': "cccc 'den', dd MMMM Y"
+```
+
+--
+
+- RichText character counter can be enabled or disabled and it's using a JavaScript function for words and characters counting
+
+```
+{% if ez_user_settings['character_counter'] == 'enabled' %}
+				<span class="ez-character-counter__word-count">0</span>
+				<span class="ez-character-counter__character-count">0</span>
+{% endif %}
+} //ezrichtext.html.twig
+
+```
+
+```
+const wordWrapper = counterWrapper.querySelector('.ez-character-counter__word-count');
+const charactersWrapper = counterWrapper.querySelector('.ez-character-counter__character-count');
+//... base-rich-text.js
+```
+
+<img src="img/features2.5/richttext_words_characters_counter.png" title="RichText character counter" />
+
+--
+
+- Language (The language of the administration panel)
+  - If you want to install a new language in your project, install the corresponding package.
+```
+composer require ezplatform-i18n/ezplatform-i18n-fr_fr
+```
+  - Alternatively, You can manually add the necessary xliff files. Add the language to an array under  ` ezpublish.system.<siteaccess>.user_preferences.additional_translations: []`
+
+
+
+[Back Office languages doc](https://doc.ezplatform.com/en/latest/guide/internationalization/#installing-new-ui-translations)
+
+--
+
+Back Office languages Fallback:
+1. Installation package or manually added xliff files
+```
+$additionalTranslations = $this->configResolver->getParameter('user_preferences.additional_translations');
+array_unique(array_merge($this->availableTranslations, $additionalTranslations)); //TranslationCollectorPass.php
+```
+```
+$availableTranslation: All installed ezplatform translation files in ezsystems/ezplatform-i18n-* package //GlobCollector.php
+```
+2. Browser language
+```
+Return a list of user's browser preferred locales directly from Accept-Language header.
+$preferableLocales = $this->requestStack->getCurrentRequest()->getLanguages(); //UserLanguagePreferenceProvider.php
+```
+
+```
+if(\in_array($preferableLocale, $this->availableTranslations, true) //RequestLocaleListener.php
+```
+
+3. `parameters.locale_fallback` in `default_parameters.yml`
+
+--
+
+- Time Zone
+  - Default: `date_default_timezone_get()` will return a default timezone of UTC if not set (e.g date.timezone)
+  - Using Symfony `TimezoneType` FormType to get the list of Time zones
+  - In the Template we can use some Twig filter to get the right Date/Time format
+    - `|ez_short_datetime`
+    - `|ez_full_datetime`
+    - ... other filters in `DateTimeExtension.php`
+
+--
+
+## Extend user settings
+
+1.Create a setting class implementing two interfaces:
+- `ValueDefinitionInterface`: Interface for displaying User Preferences in the Admin UI
+	- `getName()`: Returns name of a User Preference displayed in UI
+	- `getDescription()`: Returns description of a User Preference displayed in UI
+	- `getDisplayValue(string $storageValue)`: Returns formatted value to be displayed in UI.
+		- $storageValue: String, XML or JSON from value column.
+	- `getDefaultValue()`: Returns default value for User Preference.
+```
+ezsettings.default.....: String, []
+```
+
+--
+
+- `FormMapperInterface`:
+	- `mapFieldForm(FormBuilderInterface $formBuilder, ValueDefinitionInterface $value)`: Creates 'value' form type representing editing control for setting user preference value.
+
+```
+class CharacterCounter
+//...
+return $formBuilder->create(
+    'value',
+    ChoiceType::class,
+    [
+        'multiple' => false,
+        'required' => true,
+        'label' => $this->getTranslatedDescription(),
+        'choices' => $choices, //enabled,disabled
+    ]
+);
+```
+
+--
+
+2.Register the class as a service
+
+```
+services:
+    #...
+    EzSystems\EzPlatformUser\UserSetting\Setting\CharacterCounter:
+        tags:
+            - { name: ezplatform.admin_ui.user_setting.value, identifier: character_counter, priority: 10 }
+            - { name: ezplatform.admin_ui.user_setting.form_mapper, identifier: character_counter }
+```
+
+You can order the settings in the User menu by setting their `priority`.
+
+--
+
+## Behind the scenes
+
+- Any Class with the tag `ezplatform.admin_ui.user_setting.value` will be collected from the `ValueDefinitionPass.php` and calls the `addValueDefinition()` of the `ValueDefinitionRegistry.php` after service initialization.
+
+```
+class ValueDefinitionPass
+//...
+$registryDefinition->addMethodCall('addValueDefinition', [
+    $tag['identifier'],
+    new Reference($taggedServiceId),
+    $tag['priority'] ?? 0,
+]);
+```
+
+--
+
+Same for `ezplatform.admin_ui.user_setting.form_mapper` tag. The `FormMapperPass.php` returns all services ids for a given tag and calls the `addFormMapper()` of the `FormMapperRegistry.php` after service initialization
+
+```
+$registryDefinition->addMethodCall(
+    'addFormMapper',
+    [$tag['identifier'],
+		new Reference($taggedServiceId)]
+);
+```
+
+
+--
+
+- The `UserSettingService` uses the `ValueDefinitionRegistry.php` to __loadUserSettings__ (list in UI)  __setUserSetting__ (Store user setting)
+
+```
+if ($form->isSubmitted()) {
+	//...
+	$result = $this->submitHandler->handle($form, function (UserSettingUpdateData $data) {
+		$this->userSettingService->setUserSetting($data->getIdentifier(), $data->getValue());
+		//...
+	}
+}
+```
+
+- The `UserSettingUpdateType` build the edit form using both registry classes
+
+```
+public function buildForm(FormBuilderInterface $builder, array $options)
+{
+	$formMapper = $this->formMapperRegistry->getFormMapper($options['user_setting_identifier']);
+	$valueDefinition = $this->valueDefinitionRegistry->getValueDefinition($options['user_setting_identifier']);
+	$builder
+			->add('identifier', HiddenType::class, [])
+			->add($formMapper->mapFieldForm($builder, $valueDefinition))
+			->add('update', SubmitType::class, []);
+
+}
+```
+
+--
+
+&#9758; [Undestanding better the Integration in UI](https://github.com/ezsystems/ezplatform-admin-ui/pulls?utf8=%E2%9C%93&q=is%3Apr+preferences+in%3Atitle)(Github PRs)
+
+---
+
+## Read about the features
+
+- https://ez.no/Blog/Spring-Release-Discover-eZ-Platform-v2.5
+
+- https://ez.no/Blog/Sneak-Peek-Two-great-small-features-making-it-to-v2.5
+
+- https://ez.no/Blog/Sneak-Peek-eZ-Platform-2.5-tech-highlights
+
+- [Release note ezplatform 2.5](https://doc.ezplatform.com/en/latest/releases/ez_platform_v2.5/)
+
+- [Webinar youtube] [Discover eZ Platform v2.5](https://www.youtube.com/watch?v=3u_lFRGwWpA&feature=youtu.be&utm_campaign=%5BWebinar+Recording%5D+-++Discover+eZ+Platform+v2.5&utm_medium=email&utm_source=%5BWebinar+Recording%5D+-++Discover+eZ+Platform+v2.5&utm_content=Webinar+Recording%3A+Discover+eZ+Platform+v2.5)
+
+- [Webinar slideshare] [Discover eZ Platform v2.5](https://www.slideshare.net/eZ_Enterprise/webinar-discover-ez-platform-v25?utm_campaign=%5BWebinar%20Recording%5D%20-%20%20Discover%20eZ%20Platform%20v2.5&utm_medium=email&utm_source=%5BWebinar%20Recording%5D%20-%20%20Discover%20eZ%20Platform%20v2.5&utm_content=Webinar%20Recording%3A%20Discover%20eZ%20Platform%20v2.5)
+
+---
+
+### Thank you
+
+|                   |                                                                             |
+|-------------------|:----------------------------------------------------------------------------|
+| We                |**http://ez.no**                                                             |
+| Installation      |**https://ezplatform.com<br> https://github.com/ezsystems**                  |
+| Documentation     |**http://doc.ezplatform.com**                   |
+| Product Roadmap   |**[Product Roadmap](https://portal.productboard.com/vsjzmdg4emeihrpkxcfz6nrz)**                   |
+| Tech. Contact     |**[Slack](https://ez-community-on-slack.herokuapp.com/)<br> https://discuss.ezplatform.com**   |
