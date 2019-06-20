@@ -1039,13 +1039,13 @@ Content field definitions
 
 Content field view/edit
 
-<img class="center scale0" src="img/features2.5/ezmatrix_fileldtype_views.png" title="eZ Platform ezmatrix fileldtype settings" />
+<img class="center" src="img/features2.5/ezmatrix_fileldtype_views.png" title="eZ Platform ezmatrix fileldtype settings" />
 
 --
 
 Content field Converter
 
-<img class="center scale0" src="img/features2.5/ezmatrix_fileldtype_converter.png" title="eZ Platform ezmatrix fileldtype settings" />
+<img class="center" src="img/features2.5/ezmatrix_fileldtype_converter.png" title="eZ Platform ezmatrix fileldtype settings" />
 
 &#9758; [MatrixConverter.php](https://github.com/ezsystems/ezplatform-matrix-fieldtype/blob/master/src/lib/FieldType/Converter/MatrixConverter.php)
 
@@ -1054,7 +1054,7 @@ Content field Converter
 Content field Value - Rendering
 
 ```
-{% if not ez_is_field_empty( content, "fieldtype-identifier" ) %}
+{% if not ez_is_field_empty( content, 'fieldtype-identifier' ) %}
     <div class="ezmatrix">
         {{ ez_render_field(content, 'fieldtype-identifier') }}
     </div>
@@ -1081,8 +1081,8 @@ ezpublish:
 Content field Value - REST
 
 ```
-Accept:application/vnd.ez.api.ContentInfo+xml
-Accept:application/vnd.ez.api.ContentInfo+json
+Accept: application/vnd.ez.api.ContentInfo+xml
+Accept: application/vnd.ez.api.ContentInfo+json
 ```
 
 <img class="center scale80" src="img/features2.5/ezmatrix_fileldtype_rest_api.png" title="eZ Platform ezmatrix fileldtype rest api" />
