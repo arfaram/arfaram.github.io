@@ -885,3 +885,144 @@ but useful !
 - Dashboard a label that indicates the eZ version and license type that is being used
 
 ---
+
+# Database Updates
+
+--
+
+- [dbupdate-7.4.0-to-7.5.0.sql](https://github.com/ezsystems/ezpublish-kernel/tree/master/data/update)
+
+```
+...
+
+CREATE TABLE `ezcontentclass_attribute_ml`
+
+ALTER TABLE ezcontentobject_trash add  trashed int(11) NOT NULL DEFAULT '0';
+
+ALTER TABLE `ezcontentobject` ADD COLUMN `is_hidden` tinyint(1) NOT NULL DEFAULT '0';
+
+```
+
+--
+
+#### ezcontentclass_attribute_ml for ContentType MultilingualData
+
+[As an Administrator I want to translate ezselection Field Definition options](https://github.com/ezsystems/ezpublish-kernel/pull/2532)
+
+```
+contentclass_attribute_id: 313
+                  version: 0
+              language_id: 2
+                     name: Salutation
+              description: NULL
+                data_text: <?xml version="1.0" encoding="utf-8"?>
+<ezselection><options><option id="0" name="Mr"/><option id="1" name="Mrs."/></options></ezselection>
+
+                data_json: NULL
+*************************** 40. row ***************************
+contentclass_attribute_id: 313
+                  version: 0
+              language_id: 8
+                     name: Anrede
+              description: NULL
+                data_text: <?xml version="1.0" encoding="utf-8"?>
+<ezselection><options><option id="0" name="Herr"/><option id="1" name="Frau"/></options></ezselection>
+				data_json: NULL
+```
+
+&#9758; More infos in `SelectionConverter.php`
+
+--
+
+Using the Public API to set `ezselection` fieldSettings.
+
+```
+$selectionFieldCreate =
+$contentTypeService->newFieldDefinitionCreateStruct('selection', 'ezselection');
+$selectionFieldCreate->isRequired = true;
+//...
+$selectionFieldUpdate->fieldSettings = [
+		'multilingualOptions' => [
+				'eng-US' => [
+						0 => 'Seattle',
+						1 => 'San Francisco',
+				],
+				'ger-DE' => [
+						0 => 'Berlin',
+						1 => 'Cologne',
+						2 => 'Bonn',
+				],
+				'eng-GB' => [
+						0 => 'London',
+						1 => 'Liverpool',
+				],
+		],
+);
+```
+
+Also used everytime you translate FieldType name:
+
+```
+'name' => [
+    'eng-US' => 'description',
+    'ger-DE' => 'Überschrift',
+],
+```
+
+--
+
+#### ezcontentobject_trash : trashed column
+
+- `TrashItem->trashed` timestamp covers when a Content item was placed in Trash
+	- API: `TrashService`:  used within `trash()` and `loadTrashItem()` methods
+
+--
+
+#### ezcontentobject: is_hidden column
+
+- `is_hidden`: Hiding and revealing **Content** by making all the Locations appear hidden/visible.
+	- (Legacy)**Visibility/Location** `ezcontentobject_tree` : `is_hidden` & `is_invisible` columns
+	- (<span class="orange_text">New</span>)**Hidden/Content** `ezcontentobject`: `is_hidden` column, (`ezcontentobject_tree.is_invisible` = 1 if content is hidden)
+		- API: `ContentService`: `hideContent()` and `revealContent()` methods
+		- `HideContentSignal` and `RevealContentSignal` : `contentId` Property
+
+--
+
+## Content vs Location hide
+
+<img class="center scale0" src="img/features2.5/hide_content_vs_location.png" title="eZ Platform user content vs location hide" />
+
+---
+
+# Using PostgreSQL
+
+--
+
+- The introduction of [support for PostgreSQL](https://doc.ezplatform.com/en/latest/guide/databases/#using-postgresql) includes a change in the way database schema is generated.
+
+- It is now created based on [YAML configuration](https://github.com/ezsystems/ezpublish-kernel/blob/master/eZ/Bundle/EzPublishCoreBundle/Resources/config/storage/legacy/schema.yaml), using the new [DoctrineSchemaBundle](https://github.com/ezsystems/doctrine-dbal-schema).
+
+Requirements:
+
+&#9745; `pdo_pgsql` PHP extension
+
+&#9745; `ezsystems/doctrine-dbal-schema` Bundle provides cross-DBMS schema import
+
+&#9745; `ez_doctrine_schema` settings in config.yml
+
+--
+
+## Doctrine Schema Bundle
+
+- **SchemaBuilder**
+	- Is an extensibility point to be used by Symfony-based projects.
+	- Provided by APIs defined on the `SchemaBuilder` interface
+	- Is event-driven
+- **Schema Exporter**
+	- Provided by APIs defined on the `SchemaExporter` interface
+	- Exports given `\Doctrine\DBAL\Schema` object to the custom Yaml format.
+
+- `CoreInstaller`: New variant of CleanInstaller, which uses SchemaBuilder.
+- You can extend the `DbBasedInstaller`(only for eZPlatform Installtion) to import data `runQueriesFromFile()`
+
+---
