@@ -680,3 +680,208 @@ Encore.addEntry('demo', [
 ```
 
 ---
+
+# Various improvements
+
+--
+
+## Notification bars timeout
+
+<img class="center scale70" src="img/features2.5/notification.png" title="eZ Platform notification" />
+
+--
+
+
+```
+#ezplatform-admin-ui/src/bundle/Resources/config/ezplatform_default_settings.yml
+
+ezsettings.default.notifications.error.timeout: 0
+ezsettings.default.notifications.warning.timeout: 0
+ezsettings.default.notifications.success.timeout: 5000
+ezsettings.default.notifications.info.timeout: 0
+```
+
+```
+ezpublish:
+    system:
+        admin:
+            notifications:
+                info:
+                    timeout: 3000
+```
+
+```
+//use EzSystems\EzPlatformAdminUi\Notification\NotificationHandlerInterface;
+//use Symfony\Component\Translation\TranslatorInterface;
+
+$this->notificationHandler->info(
+    $this->translator->trans(
+        'contenttype.update.success',
+        ['%identifier%' => $data->getContentType()->identifier],
+        'dashboard'
+    )
+);
+```
+
+--
+
+## System Information - Bundle Version
+
+
+```
+composer show | grep -e kernel -e user
+composer show | egrep 'kernel|user'
+composer show -i
+composer show -i -t
+composer show -- ezsystems/ezplatform-user
+less composer.lock | grep kernel !  😱 😬
+```
+
+<img class="center scale60" src="img/features2.5/systeminformation_1.png" title="eZ Platform systeminformation" />
+
+--
+
+<img class="center scale70" src="img/features2.5/systeminformation_2.png" title="eZ Platform systeminformation" />
+
+--
+
+## Icons for Content Types
+
+`ezplatform-admin-ui`/src/bundle/Resources/config/default_parameters.yml
+
+&#xE3C9; **Standard Icons**
+```
+ezsettings.default.content_type.article:
+	thumbnail: '/bundles/ezplatformadminui/img/ez-icons.svg#article'
+ezsettings.default.content_type.blog_post:
+	thumbnail: '/bundles/ezplatformadminui/img/ez-icons.svg#blog_post'
+ezsettings.default.content_type.user:
+	thumbnail: '/bundles/ezplatformadminui/img/ez-icons.svg#user'
+```
+
+&#xE3C9; **default icon**
+```
+ezsettings.default.content_type.default-config:
+	thumbnail: '/bundles/ezplatformadminui/img/ez-icons.svg#file'
+```
+
+--
+
+&#xE3C9; **custom default icon**
+
+```
+ezpublish:
+    system:
+       default:
+           content_type:
+              default-config:
+                 thumbnail: '/assets/images/mydefaulticon.svg'
+```
+
+&#xE3C9; **custom contentType icon**
+
+```
+ezpublish:
+    system:
+       admin_group:
+           content_type:
+              article:
+                 thumbnail: '/assets/images/customicon.svg'
+```
+
+&#9998; All icons should be in SVG format so they can display properly in Back Office.
+
+--
+
+&#xE3C9; Custom icons in Twig templates
+
+```
+<svg class="ez-icon ez-icon-{{ contentType.identifier }}">
+    <use xlink:href="{{ ez_content_type_icon(contentType.identifier) }}"></use>
+</svg>
+```
+
+<img class="center scale0" src="img/features2.5/contenttype_icon.png" title="eZ Platform systeminformation" />
+
+--
+
+# RichText enhancements
+
+--
+
+## Inline custom tags
+
+- Insert the “custom tag” within a line of rich text
+- Embed different type of content in a paragraph without breaking the flow of the sentence.
+
+**Configuration**
+
+```
+ezpublish:
+    system:
+        admin_group:
+            fieldtypes:
+                ezrichtext:
+                    custom_tags: [abbreviation]
+
+ezrichtext:
+    custom_tags:
+        abbreviation:
+            template: '@ezdesign/fields/ezrichtext/custom_tags/abbreviation.html.twig'
+            icon: '/bundles/ezplatformadminui/img/ez-icons.svg#about'
+            is_inline: true
+            attributes:
+                style:
+                    type: 'string'
+```
+
+--
+
+**Edit**
+<img class="center scale60" src="img/features2.5/inline_custom_tag_ui.png" title="eZ Platform inline_custom_tag ui" />
+
+--
+
+**Storage**
+
+<img class="center scale0" src="img/features2.5/inline_custom_tag_storage.png" title="eZ Platform inline_custom_tag storage" />
+
+--
+
+**Rendering**
+
+<img class="center scale0" src="img/features2.5/inline_custom_tag_rendering.png" title="eZ Platform inline_custom_tag Rendering" />
+
+--
+
+## Anchor link
+
+<img class="center scale0" src="img/features2.5/anchor_link.png" title="eZ Platform anchor link" />
+
+--
+
+## Floating Toolbar
+
+
+<video class="center scale60" controls>
+    <source data-src="videos/floating_toolbar.mov" type="video/mp4" />
+</video>
+
+---
+
+# miscellaneous Features
+
+but useful !
+
+--
+
+- Filtering sub-items menu (Extensibility - Detail to follow)
+- Collapse sections (fields preview) in the content view
+- Assign a content item and its sub-items to a certain section from the content view
+	- (<span class="orange_text">New</span>) `AssignSectionToSubtreeSignal` : returns locationId and sectionId
+- Define a new main language for the content and then be able to delete unnecessary languages under the translation tab
+- Object state table includes fewer fields and make it easier to read
+- Password requirements: 10 characters long, and must include upper and lower case letters, and digits. Existing passwords are not changed.
+- Dashboard a label that indicates the eZ version and license type that is being used
+
+---
