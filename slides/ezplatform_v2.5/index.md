@@ -525,3 +525,158 @@ Response body:
 ```
 
 ---
+
+# Webpack Encore
+
+--
+
+- eZ Platform uses Webpack Encore(more modern way) for asset management.
+- Requirement: **node.js** and **yarn**
+
+&#9940; Assetic is still in use, but it will be deprecated in a future version.
+
+**Dump assets**
+
+```
+php bin/console assetic:dump -e prod
+yarn install
+yarn encore prod
+```
+
+```
+yarn encore dev
+yarn encore dev --config-name ezplatform
+yarn encore dev --config-name <customConfigName>
+yarn encore dev --config-name <customConfigName> --watch
+```
+
+--
+
+**1. Structuring a bundle**
+
+```        
+`-- CustomBundle
+    `-- Resources
+        |-- encore
+        |   `-- ez.config.js
+        |   `-- ez.webpack.custom.config.js
+        |   `-- ez.config.manager.js
+        `-- public
+            |-- css
+            |-- scss
+            `-- js
+
+```
+
+--
+
+&#9745; `ez.config.js`: import assets from a bundle
+
+```
+const path = require('path');
+
+module.exports = (Encore) => {
+    Encore
+        .addEntry('<entry-name-css>', [
+            path.resolve(__dirname, '../public/scss/style.scss'),
+            path.resolve(__dirname, '../public/css/style.css'),
+        ])
+				.addEntry('<entry-name-js>', [
+            path.resolve(__dirname, '../public/js/script.js')
+        ]);
+};
+
+```
+
+pagelayout.html.twig
+
+```
+{{ encore_entry_link_tags('entry-name-css') }}
+{{ encore_entry_script_tags('entry-name-js') }}
+```
+
+--
+
+&#9745; `ez.webpack.custom.config.js` : To add new configuration under your own namespace and with its own dependencies
+
+```
+const Encore = require('@symfony/webpack-encore');
+
+Encore.setOutputPath('<custom-path>')
+		.setPublicPath('<custom-path>')
+		.autoProvidejQuery()
+		.enableSassLoader()
+		// ...
+		.addEntry('<entry-name>', ['<JS-path>']);
+
+const customConfig = Encore.getWebpackConfig();
+
+customConfig.name = 'customConfigName';
+
+// Config or array of configs: [customConfig1, customConfig2];
+module.exports = customConfig;
+```
+pagelayout.html.twig
+
+```
+{{ encore_entry_link_tags('<entry-name>', null, 'customConfigName') }}
+{{ encore_entry_script_tags('<entry-name>', null, 'customConfigName') }}
+```
+
+--
+
+compile assets
+
+```
+yarn encore dev --config-name <customConfigName>
+```
+
+or use package.json:
+```
+"scripts": {
+    "dev-server": "encore dev-server",
+    "dev": "encore dev",
+    "configname": "encore dev --config-name customConfigName",
+    "watch": "encore dev --watch",
+    "build": "encore production"
+  }
+
+```
+
+and then
+```
+yarn configname
+npm run configname
+```
+
+--
+
+&#9745; `ez.config.manager.js` : To edit existing configuration entries
+
+```
+const path = require('path');
+
+module.exports = (eZConfig, eZConfigManager) => {
+    eZConfigManager.add({
+        eZConfig,
+        entryName: 'ezplatform-admin-ui-security-base-css',
+        newItems:[path.resolve(__dirname, '../public/scss/demo.admin.scss')],
+    });
+};
+```
+
+--
+
+**2. Configuration from main project file**
+
+Everything in Encore is configured via a `webpack.config.js`  file at the root of your project. It already holds the basic config you need:
+
+```
+Encore.addEntry('demo', [
+    path.resolve(__dirname, './web/assets/scss/demo.scss'),
+    path.resolve(__dirname, './web/assets/js/blocks/placesMapLoader.js'),
+    path.resolve(__dirname, './web/assets/js/main.js'),
+]);
+```
+
+---
