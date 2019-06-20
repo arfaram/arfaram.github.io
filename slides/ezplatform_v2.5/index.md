@@ -1053,11 +1053,12 @@ Content field Converter
 
 Content field Value - Rendering
 
-```
-<div class="ezmatrix">
-    {{ ez_render_field(content, 'fieldtype-identifier') }}
-</div>
-
+```php
+{% if not ez_is_field_empty( content, 'fieldtype-identifier' ) %}
+    <div class="ezmatrix">
+        {{ ez_render_field(content, 'fieldtype-identifier') }}
+    </div>
+{% endif %}
 ```
 
 <img class="center scale80" src="img/features2.5/ezmatrix_fileldtype_rendering.png" title="eZ Platform ezmatrix fileldtype public api" />
