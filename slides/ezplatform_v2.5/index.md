@@ -1026,3 +1026,105 @@ Requirements:
 - You can extend the `DbBasedInstaller`(only for eZPlatform Installtion) to import data `runQueriesFromFile()`
 
 ---
+
+# ezmatrix fieldType
+
+--
+
+Content field definitions
+
+<img class="center scale70" src="img/features2.5/ezmatrix_fileldtype_settings.png" title="eZ Platform ezmatrix fileldtype settings" />
+
+--
+
+Content field view/edit
+
+<img class="center scale0" src="img/features2.5/ezmatrix_fileldtype_views.png" title="eZ Platform ezmatrix fileldtype settings" />
+
+--
+
+Content field Converter
+
+<img class="center scale0" src="img/features2.5/ezmatrix_fileldtype_converter.png" title="eZ Platform ezmatrix fileldtype settings" />
+
+&#9758; [MatrixConverter.php](https://github.com/ezsystems/ezplatform-matrix-fieldtype/blob/master/src/lib/FieldType/Converter/MatrixConverter.php)
+
+--
+
+Content field Value - Rendering
+
+```
+{% if not ez_is_field_empty( content, "fieldtype-identifier" ) %}
+    <div class="ezmatrix">
+        {{ ez_render_field(content, 'fieldtype-identifier') }}
+    </div>
+{% endif %}
+```
+<img class="center scale80" src="img/features2.5/ezmatrix_fileldtype_rendering.png" title="eZ Platform ezmatrix fileldtype public api" />
+
+--
+
+Content field - Template override
+```
+ezpublish:
+	system:
+	    site_group:
+	        field_templates:
+	            #- { template: '@ezdesign/fields/ezmatrix/content_fields.html.twig', priority: 10 }
+	            - { template: '@EzSystemsDemo/fields/ezmatrix/content_fields.twig', priority: 10 }
+```
+
+<img class="center scale80" src="img/features2.5/ezmatrix_fileldtype_rendering_override.png" title="eZ Platform ezmatrix fileldtype template override" />
+
+--
+
+Content field Value - REST
+
+```
+Accept:application/vnd.ez.api.ContentInfo+xml
+Accept:application/vnd.ez.api.ContentInfo+json
+```
+
+<img class="center scale80" src="img/features2.5/ezmatrix_fileldtype_rest_api.png" title="eZ Platform ezmatrix fileldtype rest api" />
+
+--
+
+Content field Value - Public API
+
+```
+use EzSystems\EzPlatformMatrixFieldtype\FieldType\Value;
+use EzSystems\EzPlatformMatrixFieldtype\FieldType\Value\Row;
+//...
+$contentUpdateStruct->setField(
+    'stores',
+    new Value(
+        [
+            new Row(
+                [
+                    'store_name' => 'somewhere',
+                    'city' => 'Liverpool',
+                    'address' => 'at the corner',
+                    'zip_code' => '54321',
+                    'homepage' => 'www.somewhere.com',
+                ]
+            )
+
+        ]
+    )
+);
+
+```
+
+--
+
+## Changes to Matrix Field Type - Migration
+
+To migrate your content from legacy XML format to a new ezmatrix value use the following command:
+
+```
+bin/console ezplatform:migrate:legacy_matrix
+```
+
+&#9758; [MigrateLegacyMatrixCommand.php](https://github.com/ezsystems/ezplatform-matrix-fieldtype/blob/master/src/bundle/Command/MigrateLegacyMatrixCommand.php)
+
+---
