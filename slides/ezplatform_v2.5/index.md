@@ -1053,12 +1053,10 @@ Content field Converter
 
 Content field Value - Rendering
 
-```php
-{% if not ez_is_field_empty( content, 'fieldtype-identifier' ) %}
-    <div class="ezmatrix">
-        {{ ez_render_field(content, 'fieldtype-identifier') }}
-    </div>
-{% endif %}
+```
+<div class="ezmatrix">
+    {{ ez_render_field(content, 'fieldtype-identifier') }}
+</div>
 ```
 
 <img class="center scale80" src="img/features2.5/ezmatrix_fileldtype_rendering.png" title="eZ Platform ezmatrix fileldtype public api" />
@@ -1127,5 +1125,101 @@ bin/console ezplatform:migrate:legacy_matrix
 ```
 
 &#9758; [MigrateLegacyMatrixCommand.php](https://github.com/ezsystems/ezplatform-matrix-fieldtype/blob/master/src/bundle/Command/MigrateLegacyMatrixCommand.php)
+
+---
+
+# API Improvements
+
+--
+
+## Use sudo()
+
+- To skip permission checks. It allows API execution to be performed with full access, sand-boxed.
+- This option is recommended instead of setting the admin user as the current user.
+```
+$repository->sudo(function ($repository) use ($location) {
+    return $repository->getLocationService()->hideLocation($location);
+});
+```
+
+--
+
+## loadContentInfoList()
+
+- Especially useful for cases where you have content id's just need content info
+- Available from the Content Service
+- It Provides same content Information like `loadContentInfo()`
+
+```
+array:2 [▼
+  60 => ContentInfo {#3117 ▶}
+  224 => ContentInfo {#3182 ▼
+    #id: 224
+    #contentTypeId: 19
+    #name: "Amsterdam, Netherlands"
+    #sectionId: 1
+    #currentVersionNo: 15
+    #published: true
+    #ownerId: 14
+    #modificationDate: DateTime @1559482610 {#3190 ▶}
+    #publishedDate: DateTime @1542479004 {#3189 ▶}
+    #alwaysAvailable: 1
+    #remoteId: "4dda92e6e80cd29a2caf839234840477"
+    #mainLanguageCode: "eng-GB"
+    #mainLocationId: 226
+    #status: 1
+    #isHidden: false
+  }
+]
+```
+
+Note: Can be used in combination with RelationList or SignalSlots
+
+--
+
+
+```
+foreach ($field->value->destinationContentIds as $contentId) {
+
+	$list[$contentId] = $this->contentService->loadContentInfo($contentId);
+
+}
+```
+More better
+
+```
+$ids = $field->value->destinationContentIds;
+$list = $this->contentService->loadContentInfoList($ids);
+```
+
+--
+
+## Possibility to load several languages at once
+
+- Mostly an internal improvement but 2 new API's endpoints exposed on loading several languages at once (by id and locale):
+	- `loadLanguageListByCode(array $languageCodes)`
+```
+array:2 [▼
+	"eng-GB" => Language {#4620 ▼
+		  #id: 2
+		  #languageCode: "eng-GB"
+		  #name: "English (United Kingdom)"
+	  	#enabled: true
+	}
+	"ger-DE" => Language {#292 ▶}
+]
+```
+	- `loadLanguageListById(array $languageIds)`
+```
+array:2 [▼
+  2 => Language {#4627 ▼
+	    #id: 2
+	    #languageCode: "eng-GB"
+	    #name: "English (United Kingdom)"
+	    #enabled: true
+  }
+  8 => Language {#4634 ▶}
+]
+```
 
 ---
